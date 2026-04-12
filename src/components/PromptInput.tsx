@@ -11,8 +11,8 @@ export default function PromptInput({ socket }: PromptInput) {
   const [prompt, setPrompt] = useState<string>("");
 
   function onPress() {
-    console.log("prompt:", prompt);
     socket.emit("conversation.text", prompt);
+    setPrompt("");
   }
 
   return (

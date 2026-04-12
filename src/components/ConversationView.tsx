@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Socket } from "socket.io-client";
 import UserMessageView from "./UserMessageView";
 import AssistantThinkingView from "./AssistantThinkingView";
@@ -89,7 +89,16 @@ export default function ConversationView({ socket }: ConversationViewProps) {
   }, []);
 
   return (
-    <View style={{ display: "flex", gap: 12 }}>
+    <ScrollView
+      style={{
+        display: "flex",
+        gap: 12,
+      }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "flex-end",
+      }}
+    >
       {userContents.map((content, index) =>
         <View key={index} style={{ display: "flex", gap: 12 }}>
           <UserMessageView content={content} />
@@ -105,7 +114,7 @@ export default function ConversationView({ socket }: ConversationViewProps) {
       {assistantThinking && <AssistantThinkingView content={assistantThinking} />}
       {assistantToolName && <AssistantToolView name={assistantToolName} input={assistantToolInput} />}
       {assistantResponse && <AssistantResponseView content={assistantResponse} />}
-    </View>
+    </ScrollView>
   );
 
 }

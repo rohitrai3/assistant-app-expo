@@ -16,14 +16,6 @@ export default function UserMessageView({ content }: UserMessageViewProps) {
     >
       <Text
         style={{
-          opacity: 1 / 4,
-          color: "white",
-        }}
-      >
-        User
-      </Text>
-      <Text
-        style={{
           color: "white",
           backgroundColor: PURPLE_DARK,
           paddingInline: 12,
