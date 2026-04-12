@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Socket } from "socket.io-client";
 import UserMessageView from "./UserMessageView";
 import AssistantThinkingView from "./AssistantThinkingView";
+import AssistantResponseView from "./AssistantResponseView";
 
 type ConversationViewProps = {
   socket: Socket;
@@ -41,18 +42,18 @@ export default function ConversationView({ socket }: ConversationViewProps) {
       console.log("assistant.thinking:", res);
     });
 
-    // socket.on("assistant.response.start", () => {
-    //   setAssistantThinkingContents(prev => [...prev, thinking]);
-    //   setAssistantThinking("");
-    //   console.log("assistant.response.start");
-    //   response = "";
-    // });
-    //
-    // socket.on("assistant.response", (res) => {
-    //   response = response + res;
-    //   setAssistantResponse(prev => prev + res);
-    //   console.log("assistant.response:", res);
-    // });
+    socket.on("assistant.response.start", () => {
+      setAssistantThinkingContents(prev => [...prev, thinking]);
+      setAssistantThinking("");
+      console.log("assistant.response.start");
+      response = "";
+    });
+
+    socket.on("assistant.response", (res) => {
+      response = response + res;
+      setAssistantResponse(prev => prev + res);
+      console.log("assistant.response:", res);
+    });
 
     socket.on("assistant.signature", () => {
       setAssistantResponseContents(prev => [...prev, response]);
@@ -92,8 +93,15 @@ export default function ConversationView({ socket }: ConversationViewProps) {
   return (
     <View>
       {userContents.map((content, index) =>
-        <UserMessageView key={index} content={content} />)}
+        <View key={index} style={{ display: "flex", gap: 12 }}>
+          <UserMessageView content={content} />
+          {assistantThinkingContents[index] &&
+            <AssistantThinkingView content={assistantThinkingContents[index]} />}
+          {assistantResponseContents[index] &&
+            <AssistantResponseView content={assistantResponseContents[index]} />}
+        </View>)}
       {assistantThinking && <AssistantThinkingView content={assistantThinking} />}
+      {assistantResponse && <AssistantResponseView content={assistantResponse} />}
     </View>
   );
 
