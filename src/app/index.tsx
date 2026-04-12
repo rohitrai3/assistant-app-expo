@@ -5,8 +5,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { io } from "socket.io-client";
 
 export default function Index() {
-  const socket = io(process.env.EXPO_PUBLIC_BACKEND_URL);
-  socket.on("connect_error", (err) => console.log("Socket error:", err));
+  let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
+  socket.on("connect_error", (err) => {
+    console.log("Socket error:", err);
+    socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_2);
+  });
   socket.on("connect", () => console.log("Socket connected"));
   socket.on("disconnect", (res) => console.log("Socket disconnected:", res));
 
