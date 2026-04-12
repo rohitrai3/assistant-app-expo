@@ -1,3 +1,4 @@
+import PromptInput from "@/components/PromptInput";
 import { PURPLE } from "@/utils/constants";
 import { useEffect, useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from "react-native";
@@ -5,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { io } from "socket.io-client";
 
 export default function Index() {
-  const [prompt, setPrompt] = useState<string>("");
   const [userContents, setUserContents] = useState<string[]>([]);
   const [assistantThinkingContents, setAssistantThinkingContents] = useState<string[]>([]);
   const [assistantResponseContents, setAssistantResponseContents] = useState<string[]>([]);
@@ -16,11 +16,6 @@ export default function Index() {
   const [assistantToolName, setAssistantToolName] = useState<string>("");
   const [assistantToolInput, setAssistantToolInput] = useState<string>("");
   const socket = io(process.env.EXPO_PUBLIC_BACKEND_URL);
-
-  function onPress() {
-    console.log("prompt:", prompt);
-    socket.emit("conversation.text", prompt);
-  }
 
   useEffect(() => {
     let thinking = "";
@@ -91,6 +86,7 @@ export default function Index() {
       socket.off("assistant.tool", () => console.log("Closing assistant tool event"));
     };
   }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -103,45 +99,7 @@ export default function Index() {
         display: "flex",
         justifyContent: "flex-end"
       }}>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 12,
-            paddingInline: 12,
-          }}
-        >
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: "white",
-              borderRadius: 12,
-              padding: 12,
-              color: "white",
-              fontFamily: "Roboto-Mono",
-              flex: 1,
-            }}
-            placeholder="Prompt"
-            value={prompt}
-            onChangeText={setPrompt}
-          />
-          {prompt ?
-            <Pressable
-              style={{
-                backgroundColor: PURPLE,
-                borderRadius: 100,
-                padding: 12,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onPress={onPress}
-            >
-              <Image source={require("../../assets/images/send.png")} />
-            </Pressable>
-            : null
-          }
-        </View>
+        <PromptInput socket={socket} />
       </KeyboardAvoidingView>
     </SafeAreaView >
   );
