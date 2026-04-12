@@ -4,6 +4,7 @@ import { Socket } from "socket.io-client";
 import UserMessageView from "./UserMessageView";
 import AssistantThinkingView from "./AssistantThinkingView";
 import AssistantResponseView from "./AssistantResponseView";
+import AssistantToolView from "./AssistantToolView";
 
 type ConversationViewProps = {
   socket: Socket;
@@ -39,7 +40,6 @@ export default function ConversationView({ socket }: ConversationViewProps) {
     socket.on("assistant.thinking", res => {
       thinking = thinking + res;
       setAssistantThinking(prev => prev + res);
-      console.log("assistant.thinking:", res);
     });
 
     socket.on("assistant.response.start", () => {
@@ -52,7 +52,6 @@ export default function ConversationView({ socket }: ConversationViewProps) {
     socket.on("assistant.response", (res) => {
       response = response + res;
       setAssistantResponse(prev => prev + res);
-      console.log("assistant.response:", res);
     });
 
     socket.on("assistant.signature", () => {
@@ -65,18 +64,17 @@ export default function ConversationView({ socket }: ConversationViewProps) {
       console.log("assistant.signature");
     });
 
-    // socket.on("assistant.tool.start", (res) => {
-    //   setAssistantToolName(res);
-    //   console.log("assistant.tool.start:", res);
-    //   toolName = res;
-    //   toolInput = "";
-    // });
+    socket.on("assistant.tool.start", (res) => {
+      setAssistantToolName(res);
+      console.log("assistant.tool.start:", res);
+      toolName = res;
+      toolInput = "";
+    });
 
-    // socket.on("assistant.tool", (res) => {
-    //   setAssistantToolInput(res);
-    //   console.log("assistat.tool:", res);
-    //   toolInput = toolInput + res;
-    // });
+    socket.on("assistant.tool", (res) => {
+      setAssistantToolInput(res);
+      toolInput = toolInput + res;
+    });
 
     return () => {
       socket.off("user.message", () => console.log("Closing user message event"));
@@ -91,16 +89,21 @@ export default function ConversationView({ socket }: ConversationViewProps) {
   }, []);
 
   return (
-    <View>
+    <View style={{ display: "flex", gap: 12 }}>
       {userContents.map((content, index) =>
         <View key={index} style={{ display: "flex", gap: 12 }}>
           <UserMessageView content={content} />
           {assistantThinkingContents[index] &&
             <AssistantThinkingView content={assistantThinkingContents[index]} />}
+          {assistantToolNameContents[index] &&
+            <AssistantToolView
+              name={assistantToolNameContents[index]}
+              input={assistantToolInputContents[index]} />}
           {assistantResponseContents[index] &&
             <AssistantResponseView content={assistantResponseContents[index]} />}
         </View>)}
       {assistantThinking && <AssistantThinkingView content={assistantThinking} />}
+      {assistantToolName && <AssistantToolView name={assistantToolName} input={assistantToolInput} />}
       {assistantResponse && <AssistantResponseView content={assistantResponse} />}
     </View>
   );
