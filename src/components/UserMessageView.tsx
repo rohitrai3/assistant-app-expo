@@ -1,4 +1,4 @@
-import { PURPLE, PURPLE_DARK } from "@/utils/constants";
+import { PURPLE_DARK } from "@/utils/constants";
 import { Text, View } from "react-native";
 
 export type UserMessageViewProps = {
@@ -30,6 +30,7 @@ export default function UserMessageView({ content }: UserMessageViewProps) {
           paddingBlock: 6,
           borderTopLeftRadius: 12,
           borderBottomLeftRadius: 12,
+          maxWidth: "80%",
         }}
       >
         {content}

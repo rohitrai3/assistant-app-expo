@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Socket } from "socket.io-client";
 import UserMessageView from "./UserMessageView";
+import AssistantThinkingView from "./AssistantThinkingView";
 
 type ConversationViewProps = {
   socket: Socket;
@@ -29,17 +30,17 @@ export default function ConversationView({ socket }: ConversationViewProps) {
       console.log("user.message:", res);
     });
 
-    // socket.on("assistant.thinking.start", () => {
-    //   thinking = "";
-    //   console.log("assistnat.thinking.start");
-    // });
-    //
-    // socket.on("assistant.thinking", res => {
-    //   thinking = thinking + res;
-    //   setAssistantThinking(prev => prev + res);
-    //   console.log("assistant.thinking:", res);
-    // });
-    //
+    socket.on("assistant.thinking.start", () => {
+      thinking = "";
+      console.log("assistnat.thinking.start");
+    });
+
+    socket.on("assistant.thinking", res => {
+      thinking = thinking + res;
+      setAssistantThinking(prev => prev + res);
+      console.log("assistant.thinking:", res);
+    });
+
     // socket.on("assistant.response.start", () => {
     //   setAssistantThinkingContents(prev => [...prev, thinking]);
     //   setAssistantThinking("");
@@ -52,17 +53,17 @@ export default function ConversationView({ socket }: ConversationViewProps) {
     //   setAssistantResponse(prev => prev + res);
     //   console.log("assistant.response:", res);
     // });
-    //
-    // socket.on("assistant.signature", () => {
-    //   setAssistantResponseContents(prev => [...prev, response]);
-    //   setAssistantToolNameContents(prev => [...prev, toolName]);
-    //   setAssistantToolInputContents(prev => [...prev, toolInput]);
-    //   setAssistantResponse("");
-    //   setAssistantToolName("");
-    //   setAssistantToolInput("");
-    //   console.log("assistant.signature");
-    // });
-    //
+
+    socket.on("assistant.signature", () => {
+      setAssistantResponseContents(prev => [...prev, response]);
+      setAssistantToolNameContents(prev => [...prev, toolName]);
+      setAssistantToolInputContents(prev => [...prev, toolInput]);
+      setAssistantResponse("");
+      setAssistantToolName("");
+      setAssistantToolInput("");
+      console.log("assistant.signature");
+    });
+
     // socket.on("assistant.tool.start", (res) => {
     //   setAssistantToolName(res);
     //   console.log("assistant.tool.start:", res);
@@ -89,8 +90,11 @@ export default function ConversationView({ socket }: ConversationViewProps) {
   }, []);
 
   return (
-    userContents.map((content, index) =>
-      <UserMessageView key={index} content={content} />)
+    <View>
+      {userContents.map((content, index) =>
+        <UserMessageView key={index} content={content} />)}
+      {assistantThinking && <AssistantThinkingView content={assistantThinking} />}
+    </View>
   );
 
 }
