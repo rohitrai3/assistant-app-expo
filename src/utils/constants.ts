@@ -1,3 +1,4 @@
+export const USERNAME = "username";
 export const GRAY = "#4c5868";
 export const GRAY_DARK = "#353d48";
 export const PURPLE = "#662caa";
