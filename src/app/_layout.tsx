@@ -1,8 +1,7 @@
-import { SplashScreen, useRouter } from "expo-router";
+import { Slot, SplashScreen, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
 import { getItemAsync } from "expo-secure-store";
-import Drawer from "expo-router/drawer";
 import { USERNAME } from "@/utils/constants";
 
 export default function RootLayout() {
@@ -37,11 +36,7 @@ export default function RootLayout() {
   }
 
   return (
-    <Drawer>
-      <Drawer.Protected guard={isLoggedIn}>
-        <Drawer.Screen name="conversation" />
-      </Drawer.Protected>
-    </Drawer>
+    <Slot />
   );
 
 }
