@@ -1,4 +1,4 @@
-import { GRAY, GRAY_DARK } from "@/utils/constants";
+import { GRAY_DARK } from "@/utils/constants";
 import { Text, View } from "react-native";
 
 type AssistantResponseView = {

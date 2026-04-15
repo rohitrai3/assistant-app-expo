@@ -31,7 +31,7 @@ export default function PromptInput({ socket }: PromptInput) {
           borderRadius: 12,
           padding: 12,
           color: "white",
-          fontFamily: "Roboto-Mono",
+          fontFamily: "RobotoMono",
           flex: 1,
         }}
         placeholder="Prompt"

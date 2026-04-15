@@ -3,10 +3,12 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { getItemAsync } from "expo-secure-store";
 import { USERNAME } from "@/utils/constants";
+import StatusBar from "@/components/StatusBar";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    "Roboto-Mono": require("../../assets/fonts/RobotoMono-Regular.ttf"),
+    "RobotoMono": require("../../assets/fonts/RobotoMono-Regular.ttf"),
+    "RobotoMono-Bold": require("../../assets/fonts/RobotoMono-Bold.ttf"),
   });
   const router = useRouter();
 
@@ -27,7 +29,10 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <Slot />
+    <>
+      <StatusBar />
+      <Slot />
+    </>
   );
 
 }

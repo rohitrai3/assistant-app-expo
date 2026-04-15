@@ -1,3 +1,4 @@
+export const BACKEND_ENDPOINT = "backendEndpoint";
 export const USERNAME = "username";
 export const GRAY = "#4c5868";
 export const GRAY_DARK = "#353d48";

@@ -2,24 +2,24 @@ import { PURPLE, USERNAME } from "@/utils/constants";
 import { useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, Pressable, TextInput } from "react-native";
 import { io } from "socket.io-client";
-import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
+import { setItemAsync } from "expo-secure-store";
 
 export default function Index() {
   const [username, setUsername] = useState<string>("");
   const router = useRouter();
 
-  let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
-  socket.on("connect_error", (err) => {
-    console.log("Socket error, fallback:", err);
-    socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_2);
-  });
-  socket.on("connect", () => console.log("Socket connected"));
-  socket.on("disconnect", (res) => console.log("Socket disconnected:", res));
+  // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
+  // socket.on("connect_error", (err) => {
+  //   console.log("Socket error, fallback:", err);
+  //   socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_2);
+  // });
+  // socket.on("connect", () => console.log("Socket connected"));
+  // socket.on("disconnect", (res) => console.log("Socket disconnected:", res));
 
   async function onPress() {
     console.log("username:", username);
-    await SecureStore.setItemAsync(USERNAME, username);
+    await setItemAsync(USERNAME, username);
     router.navigate("/conversation");
   }
 
@@ -40,7 +40,7 @@ export default function Index() {
           borderRadius: 12,
           padding: 12,
           color: "white",
-          fontFamily: "Roboto-Mono",
+          fontFamily: "RobotoMono",
           height: 48,
           flex: 1,
         }}
