@@ -1,13 +1,16 @@
 import { PURPLE, USERNAME } from "@/utils/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, Pressable, TextInput } from "react-native";
 import { io } from "socket.io-client";
 import { useRouter } from "expo-router";
-import { setItemAsync } from "expo-secure-store";
+import { setItem } from "@/utils/dataStore";
+import { state$ } from "@/utils/store";
 
 export default function Index() {
   const [username, setUsername] = useState<string>("");
   const router = useRouter();
+  console.log("home:username:", state$.username.get());
+  if (state$.username.get()) router.navigate("/conversation");
 
   // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
   // socket.on("connect_error", (err) => {
@@ -18,8 +21,7 @@ export default function Index() {
   // socket.on("disconnect", (res) => console.log("Socket disconnected:", res));
 
   async function onPress() {
-    console.log("username:", username);
-    await setItemAsync(USERNAME, username);
+    state$.username.set(username);
     router.navigate("/conversation");
   }
 

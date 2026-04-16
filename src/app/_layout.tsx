@@ -1,8 +1,7 @@
-import { Slot, SplashScreen, useRouter } from "expo-router";
+import { Slot, SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { getItemAsync } from "expo-secure-store";
-import { USERNAME } from "@/utils/constants";
+import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
 import StatusBar from "@/components/StatusBar";
 
 export default function RootLayout() {
@@ -10,20 +9,10 @@ export default function RootLayout() {
     "RobotoMono": require("../../assets/fonts/RobotoMono-Regular.ttf"),
     "RobotoMono-Bold": require("../../assets/fonts/RobotoMono-Bold.ttf"),
   });
-  const router = useRouter();
-
-  async function loadUsername() {
-    const username = await getItemAsync(USERNAME);
-
-    if (username) router.navigate("/conversation");
-  }
+  enableReactTracking({ auto: true });
 
   useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-
-    loadUsername();
+    if (loaded || error) SplashScreen.hideAsync();
   }, [loaded, error]);
 
   if (!loaded && !error) return null;

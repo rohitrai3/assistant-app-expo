@@ -1,6 +1,7 @@
 import ConversationView from "@/components/ConversationView";
 import PromptInput from "@/components/PromptInput";
 import { GRAY } from "@/utils/constants";
+import { state$ } from "@/utils/store";
 import { useRouter } from "expo-router";
 import { Image, KeyboardAvoidingView, Platform, Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +9,10 @@ import { io } from "socket.io-client";
 
 export default function Conversation() {
   const router = useRouter();
-  let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
+  // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
+  console.log("conversation:username:", state$.username.get());
+  if (!state$.username.get()) router.navigate("/");
+  if (!state$.backend.get()) router.navigate("/settings");
 
   // socket.on("connect_error", (err) => {
   //   console.log("Socket error, fallback:", err);
@@ -20,7 +24,8 @@ export default function Conversation() {
   function onPress() {
     router.navigate("/settings");
   }
-
+  // <ConversationView socket={socket} />
+  // <PromptInput socket={socket} />
   return (
     <SafeAreaView
       style={{
@@ -53,8 +58,7 @@ export default function Conversation() {
         justifyContent: "flex-end",
         gap: 24,
       }}>
-        <ConversationView socket={socket} />
-        <PromptInput socket={socket} />
+
       </KeyboardAvoidingView>
     </SafeAreaView >
   );

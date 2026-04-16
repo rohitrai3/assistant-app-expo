@@ -5,7 +5,7 @@ import TextInputField from "./TextInputField";
 import ToggleInputField from "./ToggleInputField";
 import { SafeAreaView } from "react-native-safe-area-context";
 import IconButton from "./IconButton";
-import { setItemAsync } from "expo-secure-store";
+import { state$ } from "@/utils/store";
 
 type AddBackendEndpointProps = {
   isModalVisible: boolean;
@@ -17,11 +17,11 @@ export default function AddBackendEndpoint({ isModalVisible, setIsModalVisible }
   const [isActive, setIsActive] = useState<boolean>(false);
 
   async function save() {
-    await setItemAsync(BACKEND_ENDPOINT, endpoint);
-    ToastAndroid.show(
-      `Added backend endpoint: ${endpoint} and active status: ${isActive}`,
-      ToastAndroid.LONG
-    );
+    state$.backend.set(endpoint);
+    state$.notification.set({
+      content: `Added backend endpoint: ${endpoint} and active status: ${isActive}`,
+      duration: 3000
+    });
     setEndpoint("");
     setIsActive(false);
     setIsModalVisible(false);
@@ -40,6 +40,7 @@ export default function AddBackendEndpoint({ isModalVisible, setIsModalVisible }
         style={{
           flex: 1,
           backgroundColor: "rgb(0, 0, 0 / 0.5)",
+          paddingBottom: 24,
         }}>
         <KeyboardAvoidingView
           style={{

@@ -1,38 +1,50 @@
-import { BACKEND_ENDPOINT, BLACK_LIGHT, GRAY } from "@/utils/constants";
-import { getItemAsync } from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { io } from "socket.io-client";
+import ItemStatus from "./ItemStatus";
+import { state$ } from "@/utils/store";
+import Notification from "./Notification";
 
 export default function StatusBar() {
   const [backendEndpoint, setBackendEndpoint] = useState<string>("");
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
-  const socket = io(backendEndpoint);
-  socket.on("connect", () => {
-    console.log("Backend connected");
-    setIsBackendConnected(true);
-  });
-  socket.on("disconnect", () => {
-    console.log("Backend disconnected");
-    setIsBackendConnected(false);
-  });
-  socket.on("connect_error", (err) => {
-    console.log("Backend connection error:", err);
-    setIsBackendConnected(false);
-    loadBackendEndpoint();
-  });
+  const [isLlmConnected, setIsLlmConnected] = useState<boolean>(false);
+  // const socket = io(backendEndpoint);
+
+  // socket.on("connect", () => {
+  //   console.log("Backend connected");
+  //   setIsBackendConnected(true);
+  // });
+  // socket.on("disconnect", () => {
+  //   console.log("Backend disconnected");
+  //   setIsBackendConnected(false);
+  // });
+  // socket.on("connect_error", (err) => {
+  //   console.log("Backend connection error:", err);
+  //   setIsBackendConnected(false);
+  //   loadBackendEndpoint();
+  // });
+  // socket.emit("online");
 
   async function loadBackendEndpoint() {
-    const backendEndpoint = await getItemAsync(BACKEND_ENDPOINT);
+    const backendEndpoint = state$.backend.get();
     console.log("backendEndpoint:", backendEndpoint);
 
     if (backendEndpoint) setBackendEndpoint(backendEndpoint);
   }
 
   useEffect(() => {
-    loadBackendEndpoint()
+    // socket.on("online", () => {
+    //   console.log("online");
+    //   socket.emit("online");
+    // });
+    //
+    // return () => {
+    //   socket.off("online", () => console.log("Closing online event"));
+    // };
   }, []);
+
 
   return (
     <SafeAreaView
@@ -45,18 +57,13 @@ export default function StatusBar() {
         style={{
           flexDirection: "row",
           alignItems: "flex-end",
+          gap: 8,
         }}
       >
-        <Text style={{ color: "white" }}>Backend: </Text>
-        <View
-          style={{
-            backgroundColor: isBackendConnected ? "green" : GRAY,
-            width: 12,
-            height: 12,
-            borderRadius: 100,
-          }}
-        />
+        <ItemStatus name="Backend" status={isBackendConnected} />
+        <ItemStatus name="LLM" status={isLlmConnected} />
       </View>
+      <Notification />
     </SafeAreaView>
   );
 
