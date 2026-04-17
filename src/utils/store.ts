@@ -14,8 +14,8 @@ configureObservablePersistence({
 
 export const state$ = observable({
   username: "",
-  backendEndpoints: [],
-  activeEndpoint: "",
+  backendEndpoints: [] as string[],
+  activeBackendEndpoint: "",
   notification: {
     content: "",
     duration: 0,
@@ -27,20 +27,21 @@ persistObservable(state$, {
   pluginRemote: {
     set: async ({ value }) => {
       console.log("pluginRemote.set:", value);
+      console.log("activeEndpoint:", value.activeBackendEndpoint);
 
-      if (value.activeEndpoint) {
-        console.log("activeEndpoint:", value.activeEndpoint);
-
-        await fetch(`${value.activeEndpoint}/sync`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(value),
-        })
-          .then(() => console.log("Sync successful"))
-          .catch(err => console.error("Sync failed:", err));
-      }
+      // if (value.activeBackendEndpoint) {
+      //   console.log("activeEndpoint:", value.activeBackendEndpoint);
+      //
+      //   await fetch(`${value.activeBackendEndpoint}/sync`, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(value),
+      //   })
+      //     .then(() => console.log("Sync successful"))
+      //     .catch(err => console.error("Sync failed:", err));
+      // }
     },
   },
 });

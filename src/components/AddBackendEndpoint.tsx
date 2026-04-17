@@ -17,10 +17,9 @@ export default function AddBackendEndpoint({ isModalVisible, setIsModalVisible }
   const [isActive, setIsActive] = useState<boolean>(true);
 
   async function save() {
-    state$.backendEndpoints.set(prev => [...prev, {
-      endpoint: endpoint,
-      isActive: isActive,
-    }]);
+    if (isActive) state$.activeBackendEndpoint.set(endpoint);
+
+    state$.backendEndpoints.set(prev => [...prev, endpoint]);
 
     state$.notification.set({
       content: `Added backend endpoint: ${endpoint} and active status: ${isActive}`,

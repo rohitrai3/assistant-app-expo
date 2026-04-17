@@ -1,7 +1,6 @@
 import { Slot, SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
 import StatusBar from "@/components/StatusBar";
 
 export default function RootLayout() {

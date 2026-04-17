@@ -5,9 +5,10 @@ type IconButtonProps = {
   name: string;
   action: () => void;
   isPrimary: boolean;
+  size?: string;
 }
 
-export default function IconButton({ name, action, isPrimary }: IconButtonProps) {
+export default function IconButton({ name, action, isPrimary, size }: IconButtonProps) {
 
   function getPath() {
     switch (name) {
@@ -26,6 +27,10 @@ export default function IconButton({ name, action, isPrimary }: IconButtonProps)
         backgroundColor: isPrimary ? PURPLE : GRAY,
         padding: 12,
         borderRadius: 100,
+        justifyContent: "center",
+        alignItems: "center",
+        width: size === "small" ? 32 : "auto",
+        height: size === "small" ? 32 : "auto",
       }}
       onPress={action}
     >
