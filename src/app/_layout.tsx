@@ -9,7 +9,6 @@ export default function RootLayout() {
     "RobotoMono": require("../../assets/fonts/RobotoMono-Regular.ttf"),
     "RobotoMono-Bold": require("../../assets/fonts/RobotoMono-Bold.ttf"),
   });
-  enableReactTracking({ auto: true });
 
   useEffect(() => {
     if (loaded || error) SplashScreen.hideAsync();

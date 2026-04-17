@@ -1,6 +1,6 @@
-import { BACKEND_ENDPOINT, GRAY_DARK } from "@/utils/constants";
+import { GRAY_DARK } from "@/utils/constants";
 import { Dispatch, SetStateAction, useState } from "react";
-import { KeyboardAvoidingView, Modal, Platform, ToastAndroid, View } from "react-native";
+import { KeyboardAvoidingView, Modal, Platform, View } from "react-native";
 import TextInputField from "./TextInputField";
 import ToggleInputField from "./ToggleInputField";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,14 +14,19 @@ type AddBackendEndpointProps = {
 
 export default function AddBackendEndpoint({ isModalVisible, setIsModalVisible }: AddBackendEndpointProps) {
   const [endpoint, setEndpoint] = useState<string>("");
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   async function save() {
-    state$.backend.set(endpoint);
+    state$.backendEndpoints.set(prev => [...prev, {
+      endpoint: endpoint,
+      isActive: isActive,
+    }]);
+
     state$.notification.set({
       content: `Added backend endpoint: ${endpoint} and active status: ${isActive}`,
       duration: 3000
     });
+
     setEndpoint("");
     setIsActive(false);
     setIsModalVisible(false);

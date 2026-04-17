@@ -8,7 +8,10 @@ import { state$ } from "@/utils/store";
 export default function Index() {
   const [username, setUsername] = useState<string>("");
   const router = useRouter();
-  if (state$.username.get()) router.navigate("/conversation");
+
+  useEffect(() => {
+    if (state$.username.get()) router.navigate("/conversation");
+  });
 
   // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
   // socket.on("connect_error", (err) => {
