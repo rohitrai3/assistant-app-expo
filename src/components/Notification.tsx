@@ -1,6 +1,6 @@
 import { GRAY_DARK } from "@/utils/constants";
 import { state$ } from "@/utils/store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text, View } from "react-native";
 
 export default function Notification() {
@@ -15,11 +15,6 @@ export default function Notification() {
       setIsVisible(false);
     }, value.duration);
   });
-
-
-  useEffect(() => {
-
-  }, []);
 
   if (isVisible) {
     return (

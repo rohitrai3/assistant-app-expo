@@ -3,13 +3,11 @@ import { useEffect, useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, Pressable, TextInput } from "react-native";
 import { io } from "socket.io-client";
 import { useRouter } from "expo-router";
-import { setItem } from "@/utils/dataStore";
 import { state$ } from "@/utils/store";
 
 export default function Index() {
   const [username, setUsername] = useState<string>("");
   const router = useRouter();
-  console.log("home:username:", state$.username.get());
   if (state$.username.get()) router.navigate("/conversation");
 
   // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
