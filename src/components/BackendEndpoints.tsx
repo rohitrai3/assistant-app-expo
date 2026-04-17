@@ -1,18 +1,22 @@
-import { GRAY } from "@/utils/constants";
 import { useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import AddBackendEndpoint from "./AddBackendEndpoint";
 import { state$ } from "@/utils/store";
 import ToggleInputField from "./ToggleInputField";
 import IconButton from "./IconButton";
+import { observer } from "@legendapp/state/react";
 
-export default function BackendEndpoints() {
+const BackendEndpoints = observer(() => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isActiveEndpoint, setIsActiveEndpoint] = useState<boolean>(false);
   const endpoints = state$.backendEndpoints.get();
 
   function onPress() {
     setIsModalVisible(true);
+  }
+
+  function removeEndpoint(endpoint: string) {
+    state$.backendEndpoints.set(prev => prev.filter(item => item !== endpoint));
   }
 
   return (
@@ -33,12 +37,12 @@ export default function BackendEndpoints() {
         >
           Backend Endpoints
         </Text>
-        <IconButton name="add" action={onPress} isPrimary={false} size="small" />
+        <IconButton name="add" action={onPress} isPrimary={false} size="medium" />
         <AddBackendEndpoint isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
       </View>
       {endpoints.map(endpoint =>
-        <View
-          style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", gap: 12 }}>
+          <IconButton name="close" value={endpoint} action={removeEndpoint} isPrimary={false} size="small" />
           <Text style={{ color: "white", flex: 1 }}>{endpoint}</Text>
           <ToggleInputField value={isActiveEndpoint} setValue={setIsActiveEndpoint} />
         </View>
@@ -46,5 +50,7 @@ export default function BackendEndpoints() {
     </View>
   );
 
-}
+});
+
+export default BackendEndpoints;
 
