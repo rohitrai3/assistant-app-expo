@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
-import { Socket } from "socket.io-client";
 import UserMessageView from "./UserMessageView";
 import AssistantThinkingView from "./AssistantThinkingView";
 import AssistantResponseView from "./AssistantResponseView";
 import AssistantToolView from "./AssistantToolView";
+import SocketSingleton from "@/utils/socket";
 
-type ConversationViewProps = {
-  socket: Socket;
-}
-
-export default function ConversationView({ socket }: ConversationViewProps) {
+export default function ConversationView() {
   const [userContents, setUserContents] = useState<string[]>([]);
   const [assistantThinkingContents, setAssistantThinkingContents] = useState<string[]>([]);
   const [assistantResponseContents, setAssistantResponseContents] = useState<string[]>([]);
@@ -22,6 +18,7 @@ export default function ConversationView({ socket }: ConversationViewProps) {
   const [assistantToolInput, setAssistantToolInput] = useState<string>("");
 
   useEffect(() => {
+    const socket = SocketSingleton.getInstance();
     let thinking = "";
     let response = "";
     let toolName = "";
@@ -118,3 +115,4 @@ export default function ConversationView({ socket }: ConversationViewProps) {
   );
 
 }
+

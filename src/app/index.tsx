@@ -1,6 +1,6 @@
 import { PRIMARY } from "@/utils/constants";
 import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { state$ } from "@/utils/store";
 import TextInputField from "@/components/TextInputField";
@@ -35,28 +35,30 @@ export default function Index() {
   }
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{
-      backgroundColor: "black",
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      gap: 48,
-      padding: 12,
-    }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "black",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingInline: 12,
+        gap: 48,
+      }}
+    >
       <View
         style={{
           width: "100%",
           gap: 12,
         }}
       >
-        <TextInputField placeholder="Username" value={username} setValue={setUsername} />
-        <TextInputField placeholder="Endpoint" value={endpoint} setValue={setEndpoint} />
+        <TextInputField placeholder="Username..." value={username} setValue={setUsername} />
+        <TextInputField placeholder="Endpoint..." value={endpoint} setValue={setEndpoint} />
       </View>
       {(username && endpoint) ?
         <IconButton name="next" action={submit} type={PRIMARY} />
         : null
       }
-    </KeyboardAvoidingView>
+    </View>
   );
 
 }

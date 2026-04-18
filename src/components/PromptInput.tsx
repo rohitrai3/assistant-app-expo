@@ -1,16 +1,14 @@
 import { PURPLE } from "@/utils/constants";
+import SocketSingleton from "@/utils/socket";
 import { useState } from "react";
-import { Image, Pressable, TextInput, View } from "react-native";
-import { Socket } from "socket.io-client";
+import { Image, Pressable, View } from "react-native";
+import TextInputField from "./TextInputField";
 
-type PromptInput = {
-  socket: Socket;
-}
-
-export default function PromptInput({ socket }: PromptInput) {
+export default function PromptInput() {
   const [prompt, setPrompt] = useState<string>("");
 
   function onPress() {
+    const socket = SocketSingleton.getInstance();
     socket.emit("conversation.text", prompt);
     setPrompt("");
   }
@@ -24,20 +22,7 @@ export default function PromptInput({ socket }: PromptInput) {
         paddingInline: 12,
       }}
     >
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "white",
-          borderRadius: 12,
-          padding: 12,
-          color: "white",
-          fontFamily: "RobotoMono",
-          flex: 1,
-        }}
-        placeholder="Prompt"
-        value={prompt}
-        onChangeText={setPrompt}
-      />
+      <TextInputField placeholder="Prompt..." value={prompt} setValue={setPrompt} />
       {prompt ?
         <Pressable
           style={{

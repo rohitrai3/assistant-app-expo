@@ -1,6 +1,7 @@
 import { Slot, SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { KeyboardAvoidingView, KeyboardProvider } from "react-native-keyboard-controller";
 import StatusBar from "@/components/StatusBar";
 
 export default function RootLayout() {
@@ -16,10 +17,17 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <>
-      <StatusBar />
-      <Slot />
-    </>
+    <KeyboardProvider>
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+        }}
+        behavior="padding"
+      >
+        <StatusBar />
+        <Slot />
+      </KeyboardAvoidingView>
+    </KeyboardProvider >
   );
 
 }
