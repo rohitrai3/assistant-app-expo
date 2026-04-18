@@ -10,7 +10,7 @@ type TextInputFieldProps = {
 export default function TextInputField({ placeholder, value, setValue }: TextInputFieldProps) {
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ width: "100%" }}>
       <TextInput
         style={{
           borderWidth: 1,

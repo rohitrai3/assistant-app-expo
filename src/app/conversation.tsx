@@ -13,7 +13,7 @@ export default function Conversation() {
   // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
   useEffect(() => {
     if (!state$.username.get()) router.navigate("/");
-    if (!state$.backend.get()) router.navigate("/settings");
+    if (!state$.activeEndpoint.get()) router.navigate("/settings");
   });
   // socket.on("connect_error", (err) => {
   //   console.log("Socket error, fallback:", err);

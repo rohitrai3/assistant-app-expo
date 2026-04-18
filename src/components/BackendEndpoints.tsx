@@ -37,12 +37,12 @@ const BackendEndpoints = observer(() => {
         >
           Backend Endpoints
         </Text>
-        <IconButton name="add" action={onPress} isPrimary={false} size="medium" />
+        <IconButton name="add" action={onPress} size="medium" />
         <AddBackendEndpoint isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
       </View>
-      {endpoints.map(endpoint =>
-        <View style={{ flexDirection: "row", gap: 12 }}>
-          <IconButton name="close" value={endpoint} action={removeEndpoint} isPrimary={false} size="small" />
+      {endpoints.map((endpoint, index) =>
+        <View key={index} style={{ flexDirection: "row", gap: 12 }}>
+          <IconButton name="close" value={endpoint} action={removeEndpoint} size="small" />
           <Text style={{ color: "white", flex: 1 }}>{endpoint}</Text>
           <ToggleInputField value={isActiveEndpoint} setValue={setIsActiveEndpoint} />
         </View>

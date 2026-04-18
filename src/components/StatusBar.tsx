@@ -10,7 +10,7 @@ import SocketSingleton from "@/utils/socket";
 const StatusBar = observer(() => {
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
 
-  if (state$.backend.get()) {
+  if (state$.activeEndpoint.get()) {
     const socket = SocketSingleton.getInstance();
 
     socket.on("connect", () => {

@@ -14,8 +14,8 @@ configureObservablePersistence({
 
 export const state$ = observable({
   username: "",
-  backendEndpoints: [] as string[],
-  activeBackendEndpoint: "",
+  activeEndpoint: "",
+  endpoints: [] as string[],
   notification: {
     content: "",
     duration: 0,
@@ -25,23 +25,33 @@ export const state$ = observable({
 persistObservable(state$, {
   local: "state",
   pluginRemote: {
-    set: async ({ value }) => {
-      console.log("pluginRemote.set:", value);
-      console.log("activeEndpoint:", value.activeBackendEndpoint);
+    set: async ({ value, changes }) => {
+      console.log("value:", value);
+      console.log("changes:", changes);
 
-      // if (value.activeBackendEndpoint) {
-      //   console.log("activeEndpoint:", value.activeBackendEndpoint);
+      //   if (!value) {
+      //     console.log("Logout");
+      //   }
       //
-      //   await fetch(`${value.activeBackendEndpoint}/sync`, {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(value),
-      //   })
-      //     .then(() => console.log("Sync successful"))
-      //     .catch(err => console.error("Sync failed:", err));
-      // }
+      //   changes.forEach(change => {
+      //     change.path.forEach(async path => {
+      //       console.log("path:", path);
+      //
+      //       if (path === "activeBackendEndpoint") {
+      //         console.log("value:", JSON.stringify(value));
+      //
+      //         await fetch(`${value.activeBackendEndpoint}/sync`, {
+      //           method: "POST",
+      //           headers: {
+      //             "Content-Type": "application/json",
+      //           },
+      //           body: JSON.stringify(value),
+      //         })
+      //           .then(() => console.log("Sync successful"))
+      //           .catch(err => console.error("Sync failed:", err));
+      //       }
+      //     });
+      //   });
     },
   },
 });

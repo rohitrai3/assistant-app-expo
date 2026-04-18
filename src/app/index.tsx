@@ -1,70 +1,59 @@
-import { PURPLE, USERNAME } from "@/utils/constants";
+import { PRIMARY } from "@/utils/constants";
 import { useEffect, useState } from "react";
-import { Image, KeyboardAvoidingView, Platform, Pressable, TextInput } from "react-native";
-import { io } from "socket.io-client";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { useRouter } from "expo-router";
 import { state$ } from "@/utils/store";
+import TextInputField from "@/components/TextInputField";
+import IconButton from "@/components/IconButton";
+import { login, ping } from "@/utils/backend";
 
 export default function Index() {
   const [username, setUsername] = useState<string>("");
+  const [endpoint, setEndpoint] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
     if (state$.username.get()) router.navigate("/conversation");
   });
 
-  // let socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_1);
-  // socket.on("connect_error", (err) => {
-  //   console.log("Socket error, fallback:", err);
-  //   socket = io(process.env.EXPO_PUBLIC_BACKEND_URL_2);
-  // });
-  // socket.on("connect", () => console.log("Socket connected"));
-  // socket.on("disconnect", (res) => console.log("Socket disconnected:", res));
+  async function submit() {
+    const isReachable = await ping(endpoint);
 
-  async function onPress() {
-    state$.username.set(username);
-    router.navigate("/conversation");
+    if (isReachable) {
+      const loginResponse = await login({
+        username: username,
+        endpoint: endpoint
+      });
+
+      if (loginResponse) {
+        state$.username.set(loginResponse.username);
+        state$.activeEndpoint.set(loginResponse.activeEndpoint);
+        state$.endpoints.set(loginResponse.endpoints);
+        router.navigate("/conversation");
+      }
+    }
   }
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{
       backgroundColor: "black",
       flex: 1,
-      display: "flex",
-      flexDirection: "row",
+      justifyContent: "center",
       alignItems: "center",
-      gap: 12,
+      gap: 48,
       padding: 12,
     }}>
-      <TextInput
+      <View
         style={{
-          borderWidth: 1,
-          borderColor: "white",
-          borderRadius: 12,
-          padding: 12,
-          color: "white",
-          fontFamily: "RobotoMono",
-          height: 48,
-          flex: 1,
+          width: "100%",
+          gap: 12,
         }}
-        placeholder="What should I call you?"
-        value={username}
-        onChangeText={setUsername}
-      />
-      {username ?
-        <Pressable
-          style={{
-            backgroundColor: PURPLE,
-            borderRadius: 100,
-            padding: 12,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={onPress}
-        >
-          <Image source={require("../../assets/images/send.png")} />
-        </Pressable>
+      >
+        <TextInputField placeholder="Username" value={username} setValue={setUsername} />
+        <TextInputField placeholder="Endpoint" value={endpoint} setValue={setEndpoint} />
+      </View>
+      {(username && endpoint) ?
+        <IconButton name="next" action={submit} type={PRIMARY} />
         : null
       }
     </KeyboardAvoidingView>

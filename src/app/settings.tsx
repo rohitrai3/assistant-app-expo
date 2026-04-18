@@ -1,5 +1,6 @@
 import BackendEndpoints from "@/components/BackendEndpoints";
-import { Text } from "react-native";
+import SignOut from "@/components/LogOut";
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Settings() {
@@ -13,6 +14,9 @@ export default function Settings() {
         backgroundColor: "black",
       }}
     >
+      <View style={{ alignItems: "flex-end" }}>
+        <SignOut />
+      </View>
       <Text
         style={{
           fontFamily: "RobotoMono-Bold",

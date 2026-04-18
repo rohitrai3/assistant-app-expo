@@ -1,5 +1,6 @@
-export const BACKEND_ENDPOINT = "backendEndpoint";
-export const USERNAME = "username";
+export const PRIMARY = "primary";
+export const TERTIARY = "tertiary";
+export const RED = "#cc0000";
 export const GRAY = "#4c5868";
 export const GRAY_DARK = "#353d48";
 export const PURPLE = "#662caa";

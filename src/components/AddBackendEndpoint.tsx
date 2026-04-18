@@ -1,4 +1,4 @@
-import { GRAY_DARK } from "@/utils/constants";
+import { GRAY_DARK, PRIMARY } from "@/utils/constants";
 import { Dispatch, SetStateAction, useState } from "react";
 import { KeyboardAvoidingView, Modal, Platform, View } from "react-native";
 import TextInputField from "./TextInputField";
@@ -27,7 +27,7 @@ export default function AddBackendEndpoint({ isModalVisible, setIsModalVisible }
     });
 
     setEndpoint("");
-    setIsActive(false);
+    setIsActive(true);
     setIsModalVisible(false);
   }
 
@@ -79,8 +79,8 @@ export default function AddBackendEndpoint({ isModalVisible, setIsModalVisible }
                 justifyContent: "space-between",
               }}
             >
-              <IconButton name="close" action={close} isPrimary={false} />
-              <IconButton name="check" action={save} isPrimary={true} />
+              <IconButton name="close" action={close} />
+              {endpoint ? <IconButton name="check" action={save} type={PRIMARY} /> : null}
             </View>
           </View>
         </KeyboardAvoidingView>

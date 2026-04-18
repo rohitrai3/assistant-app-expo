@@ -1,15 +1,15 @@
-import { GRAY, PURPLE } from "@/utils/constants";
+import { GRAY, PRIMARY, PURPLE, RED, TERTIARY } from "@/utils/constants";
 import { Image, Pressable } from "react-native";
 
 type IconButtonProps = {
   name: string;
   value?: string;
   action: (...args: string[]) => void;
-  isPrimary: boolean;
+  type?: string;
   size?: string;
 }
 
-export default function IconButton({ name, value, action, isPrimary, size }: IconButtonProps) {
+export default function IconButton({ name, value, action, type, size }: IconButtonProps) {
 
   function onPress() {
     if (value) {
@@ -25,6 +25,10 @@ export default function IconButton({ name, value, action, isPrimary, size }: Ico
         return require("../../assets/images/check.png");
       case "close":
         return require("../../assets/images/close.png");
+      case "logout":
+        return require("../../assets/images/logout.png");
+      case "next":
+        return require("../../assets/images/next.png");
       default:
         return require("../../assets/images/add.png");
     }
@@ -37,7 +41,7 @@ export default function IconButton({ name, value, action, isPrimary, size }: Ico
       case "medium":
         return 32;
       default:
-        return 96;
+        return 48;
     }
   }
 
@@ -46,16 +50,27 @@ export default function IconButton({ name, value, action, isPrimary, size }: Ico
       case "small":
         return 12;
       case "medium":
-        return 20;
+        return 18;
       default:
-        return 48;
+        return 24;
+    }
+  }
+
+  function getColor() {
+    switch (type) {
+      case PRIMARY:
+        return PURPLE;
+      case TERTIARY:
+        return RED;
+      default:
+        return GRAY;
     }
   }
 
   return (
     <Pressable
       style={{
-        backgroundColor: isPrimary ? PURPLE : GRAY,
+        backgroundColor: getColor(),
         padding: 0,
         borderRadius: 100,
         justifyContent: "center",
