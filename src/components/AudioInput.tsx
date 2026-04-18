@@ -1,60 +1,51 @@
-import { useRef, useState } from "react";
+import { useEffect } from "react";
 import IconButton from "./IconButton";
 import { PRIMARY } from "@/utils/constants";
+import { useAudioRecorder, RecordingPresets, useAudioRecorderState, AudioModule, setAudioModeAsync } from "expo-audio";
+import { Alert } from "react-native";
 
 export default function AudioInput() {
-  const [recording, setRecording] = useState<boolean>(false);
-  const streamRef = useRef<MediaStream | null>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<Blob[]>([]);
+  const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const recorderState = useAudioRecorderState(audioRecorder);
 
-  // async function startRecording() {
-  //   streamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //   const mediaRecorder = new MediaRecorder(streamRef.current, { mimeType: "audio/webm" });
-  //   mediaRecorderRef.current = mediaRecorder;
-  //
-  //   mediaRecorder.addEventListener("dataavailable", async (event) => {
-  //     if (event.data.size > 0) {
-  //       chunksRef.current.push(event.data);
-  //     }
-  //
-  //     if (mediaRecorder.state === "inactive") {
-  //       let blob = new Blob(chunksRef.current, { type: "audio/wav" });
-  //
-  //       chunksRef.current = [];
-  //
-  //       // const audioData = await read_audio(URL.createObjectURL(blob), 16000);
-  //
-  //       // socket.emit("conversation", audioData);
-  //
-  //       streamRef.current?.getTracks().forEach(track => track.stop());
-  //     }
-  //   });
-  //
-  //   mediaRecorder.start();
-  //   setRecording(true);
-  // }
-  //
-  // function stopRecording() {
-  //   if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-  //     mediaRecorderRef.current.stop();
-  //     setRecording(false);
-  //   }
-  // };
+  async function startRecording() {
+    console.log("startRecording");
+    await audioRecorder.prepareToRecordAsync();
+    audioRecorder.record();
+  }
 
+  async function stopRecording() {
+    console.log("stopRecording");
+    await audioRecorder.stop();
+  };
 
-  function onClick() {
-    if (recording) {
-      setRecording(false);
-      // stopRecording();
+  useEffect(() => {
+    (async () => {
+      const status = await AudioModule.requestRecordingPermissionsAsync();
+
+      if (!status.granted) Alert.alert("Permission to access microphone was denied");
+
+      setAudioModeAsync(({
+        playsInSilentMode: true,
+        allowsRecording: true,
+      }));
+    })();
+  }, []);
+
+  function record() {
+    if (recorderState.isRecording) {
+      stopRecording();
     } else {
-      setRecording(true);
-      // startRecording();
+      startRecording();
     }
   }
 
   return (
-    <IconButton name={recording ? "mic_off" : "mic"} action={onClick} type={recording ? "" : PRIMARY} />
+    <IconButton
+      name={recorderState.isRecording ? "mic_off" : "mic"}
+      action={record}
+      type={recorderState.isRecording ? "" : PRIMARY}
+    />
   );
 }
 
