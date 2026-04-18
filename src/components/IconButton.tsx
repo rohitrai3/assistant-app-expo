@@ -33,6 +33,10 @@ export default function IconButton({ name, value, action, type, size }: IconButt
         return require("../../assets/images/send.png");
       case "settings":
         return require("../../assets/images/settings.png");
+      case "mic":
+        return require("../../assets/images/mic.png");
+      case "mic_off":
+        return require("../../assets/images/mic_off.png");
       default:
         return require("../../assets/images/add.png");
     }

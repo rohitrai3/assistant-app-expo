@@ -4,6 +4,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import TextInputField from "./TextInputField";
 import IconButton from "./IconButton";
+import AudioInput from "./AudioInput";
 
 export default function PromptInput() {
   const [prompt, setPrompt] = useState<string>("");
@@ -29,6 +30,7 @@ export default function PromptInput() {
         <IconButton name="send" action={sendPrompt} type={PRIMARY} />
         : null
       }
+      <AudioInput />
     </View>
   );
 }
