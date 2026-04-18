@@ -1,13 +1,14 @@
-import { PURPLE } from "@/utils/constants";
+import { PRIMARY } from "@/utils/constants";
 import SocketSingleton from "@/utils/socket";
 import { useState } from "react";
-import { Image, Pressable, View } from "react-native";
+import { View } from "react-native";
 import TextInputField from "./TextInputField";
+import IconButton from "./IconButton";
 
 export default function PromptInput() {
   const [prompt, setPrompt] = useState<string>("");
 
-  function onPress() {
+  function sendPrompt() {
     const socket = SocketSingleton.getInstance();
     socket.emit("conversation.text", prompt);
     setPrompt("");
@@ -16,27 +17,16 @@ export default function PromptInput() {
   return (
     <View
       style={{
-        display: "flex",
         flexDirection: "row",
         gap: 12,
         paddingInline: 12,
       }}
     >
-      <TextInputField placeholder="Prompt..." value={prompt} setValue={setPrompt} />
+      <View style={{ flex: 1 }}>
+        <TextInputField placeholder="Prompt..." value={prompt} setValue={setPrompt} />
+      </View>
       {prompt ?
-        <Pressable
-          style={{
-            backgroundColor: PURPLE,
-            borderRadius: 100,
-            padding: 12,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={onPress}
-        >
-          <Image source={require("../../assets/images/send.png")} />
-        </Pressable>
+        <IconButton name="send" action={sendPrompt} type={PRIMARY} />
         : null
       }
     </View>

@@ -29,6 +29,10 @@ export default function IconButton({ name, value, action, type, size }: IconButt
         return require("../../assets/images/logout.png");
       case "next":
         return require("../../assets/images/next.png");
+      case "send":
+        return require("../../assets/images/send.png");
+      case "settings":
+        return require("../../assets/images/settings.png");
       default:
         return require("../../assets/images/add.png");
     }
@@ -41,7 +45,7 @@ export default function IconButton({ name, value, action, type, size }: IconButt
       case "medium":
         return 32;
       default:
-        return 48;
+        return 46;
     }
   }
 

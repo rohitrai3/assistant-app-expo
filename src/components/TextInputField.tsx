@@ -12,6 +12,7 @@ export default function TextInputField({ placeholder, value, setValue }: TextInp
   return (
     <TextInput
       style={{
+        width: "100%",
         borderWidth: 1,
         borderColor: "white",
         borderRadius: 12,

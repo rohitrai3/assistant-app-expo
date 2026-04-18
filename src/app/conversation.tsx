@@ -1,4 +1,5 @@
 import ConversationView from "@/components/ConversationView";
+import IconButton from "@/components/IconButton";
 import PromptInput from "@/components/PromptInput";
 import { GRAY } from "@/utils/constants";
 import { state$ } from "@/utils/store";
@@ -10,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Conversation() {
   const router = useRouter();
 
-  function onPress() {
+  function goToSettings() {
     router.navigate("/settings");
   }
 
@@ -24,6 +25,7 @@ export default function Conversation() {
       style={{
         backgroundColor: "black",
         flex: 1,
+        gap: 24,
       }}
       edges={["right", "bottom", "left"]}
     >
@@ -34,16 +36,7 @@ export default function Conversation() {
           paddingRight: 12,
         }}
       >
-        <Pressable
-          style={{
-            backgroundColor: GRAY,
-            padding: 12,
-            borderRadius: 100,
-          }}
-          onPress={onPress}
-        >
-          <Image source={require("../../assets/images/settings.png")} />
-        </Pressable>
+        <IconButton name="settings" action={goToSettings} />
       </View>
       <ConversationView />
       <PromptInput />
