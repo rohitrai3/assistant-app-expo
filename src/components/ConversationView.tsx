@@ -89,11 +89,11 @@ export default function ConversationView() {
     <ScrollView
       style={{
         display: "flex",
-        gap: 12,
       }}
       contentContainerStyle={{
         flexGrow: 1,
         justifyContent: "flex-end",
+        gap: 12,
       }}
     >
       {userContents.map((content, index) =>

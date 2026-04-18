@@ -37,6 +37,7 @@
         }
       ],
       "expo-font",
+      "react-native-audio-api",
       "expo-audio"
     ],
     "experiments": {
