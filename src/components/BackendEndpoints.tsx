@@ -9,14 +9,14 @@ import { observer } from "@legendapp/state/react";
 const BackendEndpoints = observer(() => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isActiveEndpoint, setIsActiveEndpoint] = useState<boolean>(false);
-  const endpoints = state$.backendEndpoints.get();
+  const endpoints = state$.endpoints.get();
 
   function onPress() {
     setIsModalVisible(true);
   }
 
   function removeEndpoint(endpoint: string) {
-    state$.backendEndpoints.set(prev => prev.filter(item => item !== endpoint));
+    state$.endpoints.set(prev => prev.filter(item => item !== endpoint));
   }
 
   return (

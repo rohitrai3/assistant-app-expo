@@ -1,11 +1,10 @@
 import ConversationView from "@/components/ConversationView";
 import IconButton from "@/components/IconButton";
 import PromptInput from "@/components/PromptInput";
-import { GRAY } from "@/utils/constants";
 import { state$ } from "@/utils/store";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Image, Pressable, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Conversation() {
