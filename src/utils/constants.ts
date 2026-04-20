@@ -1,3 +1,9 @@
+export const EMPTY_CONVERSATION = {
+  user: "",
+  thinking: "",
+  tool: "",
+  assistant: "",
+};
 export const PRIMARY = "primary";
 export const TERTIARY = "tertiary";
 export const RED = "#cc0000";

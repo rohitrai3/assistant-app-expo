@@ -1,3 +1,10 @@
+export type ConversationContent = {
+  user: string;
+  thinking: string;
+  tool: string;
+  assistant: string;
+}
+
 export type LoginResponse = {
   username: string;
   activeEndpoint: string;

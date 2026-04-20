@@ -3,11 +3,10 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
 type AssistantToolView = {
-  name: string;
-  input: string;
+  content: string;
 }
 
-export default function AssistantToolView({ name, input }: AssistantToolView) {
+export default function AssistantToolView({ content }: AssistantToolView) {
   const [isExpand, setIsExpand] = useState<boolean>(false);
 
   function onPress() {
@@ -39,7 +38,7 @@ export default function AssistantToolView({ name, input }: AssistantToolView) {
               maxWidth: "80%",
             }}
           >
-            Name: {name}, Input: {input}
+            Name: {content}
           </Text>
           : null
         }

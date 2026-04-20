@@ -11,7 +11,7 @@ export default function PromptInput() {
 
   function sendPrompt() {
     const socket = SocketSingleton.getInstance();
-    socket.emit("conversation.text", prompt);
+    socket.emit("conversation.user.text", prompt);
     setPrompt("");
   }
 
@@ -26,11 +26,10 @@ export default function PromptInput() {
       <View style={{ flex: 1 }}>
         <TextInputField placeholder="Prompt..." value={prompt} setValue={setPrompt} />
       </View>
-      {prompt ?
-        <IconButton name="send" action={sendPrompt} type={PRIMARY} />
-        : null
+      {prompt
+        ? <IconButton name="send" action={sendPrompt} type={PRIMARY} />
+        : <AudioInput />
       }
-      <AudioInput />
     </View>
   );
 }

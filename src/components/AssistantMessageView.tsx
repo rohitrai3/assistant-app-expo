@@ -1,11 +1,11 @@
 import { GRAY_DARK } from "@/utils/constants";
 import { Text, View } from "react-native";
 
-type AssistantResponseView = {
+type AssistantMessageViewProps = {
   content: string;
 }
 
-export default function AssistantResponseView({ content }: AssistantResponseView) {
+export default function AssistantMessageView({ content }: AssistantMessageViewProps) {
 
   return (
     <View>
