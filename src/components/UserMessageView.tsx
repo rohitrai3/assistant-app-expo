@@ -23,6 +23,7 @@ export default function UserMessageView({ content }: UserMessageViewProps) {
           borderTopLeftRadius: 12,
           borderBottomLeftRadius: 12,
           maxWidth: "80%",
+          fontFamily: "RobotoMono",
         }}
       >
         {content}

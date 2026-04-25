@@ -18,6 +18,7 @@ export default function AssistantMessageView({ content }: AssistantMessageViewPr
           borderBottomRightRadius: 12,
           maxWidth: "80%",
           backgroundColor: GRAY_DARK,
+          fontFamily: "RobotoMono",
         }}
       >
         {content}

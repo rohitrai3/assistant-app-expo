@@ -36,6 +36,7 @@ export default function AssistantThinkingView({ content }: AssistantThinkingView
               borderLeftWidth: 0,
               borderColor: GRAY,
               maxWidth: "80%",
+              fontFamily: "RobotoMono",
             }}
           >
             {content}

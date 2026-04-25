@@ -36,6 +36,7 @@ export default function AssistantToolView({ content }: AssistantToolView) {
               borderLeftWidth: 0,
               borderColor: GRAY,
               maxWidth: "80%",
+              fontFamily: "RobotoMono",
             }}
           >
             Name: {content}
