@@ -13,7 +13,7 @@ export default function ConversationBlock({ conversation }: ConversationBlockPro
 
   return (
     <View style={{ gap: 12 }}>
-      <UserMessageView content={conversation.user} />
+      {conversation.user ? <UserMessageView content={conversation.user} /> : null}
       {conversation.thinking ? <AssistantThinkingView content={conversation.thinking} /> : null}
       {conversation.tool ? <AssistantToolView content={conversation.tool} /> : null}
       {conversation.assistant ? <AssistantMessageView content={conversation.assistant} /> : null}

@@ -18,6 +18,11 @@ export default function ConversationView() {
   useEffect(() => {
     const socket = SocketSingleton.getInstance();
 
+    socket.on("conversation.start", () => {
+      console.log("conversation.start");
+      setConversations(prev => [...prev, { user: "", thinking: "", tool: "", assistant: "" }]);
+    });
+
     socket.on("conversation.user.message", res => {
       console.log("conversation.user.message");
       setConversations(prev => [...prev, { user: res, thinking: "", tool: "", assistant: "" }]);
@@ -104,6 +109,8 @@ export default function ConversationView() {
     });
 
     return () => {
+      socket.off("conversation.start", () =>
+        console.log("Closing conversation start event"));
       socket.off("conversation.user.message", () =>
         console.log("Closing user message event"));
       socket.off("assistant.thinking.start", () =>
