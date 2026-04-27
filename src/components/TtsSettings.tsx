@@ -1,22 +1,20 @@
 import { getAvailableVoicesAsync, speak } from "expo-speech";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import ToggleInputField from "./ToggleInputField";
 import SelectInputField from "./SelectInputField";
+import { TtsVoice } from "@/utils/types";
+import { state$ } from "@/utils/store";
+import Loading from "./Loading";
 
-type TtsVoice = {
-  language: string;
-  region: string;
-  name: string;
-  isSelected: boolean;
-};
+
 
 export default function TtsSettings() {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [voices, setVoices] = useState<TtsVoice[]>([]);
   const [filteredVoices, setFilteredVoices] = useState<TtsVoice[]>([]);
   const [languages, setLanguages] = useState<Set<string>>(new Set());
   const [selectedLanguage, setSelectedLanguage] = useState<string>("--");
-  const [regions, setRegions] = useState<Set<string>>(new Set());
   const [regionOptions, setRegionOptions] = useState<Set<string>>(new Set());
   const [selectedRegion, setSelectedRegion] = useState<string>("--");
 
@@ -27,29 +25,52 @@ export default function TtsSettings() {
       const regions = new Set<string>();
       const regionOptions = new Set<string>();
       const voices = new Array<TtsVoice>();
+      const filteredVoices = new Array<TtsVoice>();
+      const selectedVoice = state$.ttsVoice.get();
 
       availableVoices.forEach(voice => {
         const language = voice.language.split("-");
         languages.add(language[0]);
         regions.add(language[1]);
-        voices.push({ language: language[0], region: language[1], name: voice.name, isSelected: false });
+        voices.push({
+          language: language[0],
+          region: language[1],
+          name: voice.name,
+          isSelected: voice.name === selectedVoice.name,
+        });
 
         if (language[0] === selectedLanguage) regionOptions.add(language[1]);
+        if (voice.language === `${selectedVoice.language}-${selectedVoice.region}`) {
+          filteredVoices.push({
+            language: language[0],
+            region: language[1],
+            name: voice.name,
+            isSelected: voice.name === selectedVoice.name,
+          });
+        }
       });
 
       setLanguages(languages);
-      setRegions(regions);
       setRegionOptions(regionOptions);
       setVoices(voices);
+      setSelectedLanguage(selectedVoice.language);
+      setSelectedRegion(selectedVoice.region);
+      setFilteredVoices(filteredVoices);
+      setIsLoading(false);
     })();
   }, []);
 
   function onVoiceSelect(name: string) {
     speak("Hello World!", { voice: name });
-    setVoices(prev =>
+
+    setFilteredVoices(prev =>
       prev.map(voice => {
-        if (voice.name === name) voice.isSelected = true;
-        else voice.isSelected = false;
+        if (voice.name === name) {
+          voice.isSelected = true;
+          state$.ttsVoice.set(voice);
+        } else {
+          voice.isSelected = false;
+        }
 
         return voice;
       })
@@ -88,18 +109,21 @@ export default function TtsSettings() {
 
   return (
     <View style={{ paddingInline: 12, gap: 12, paddingBottom: 24 }}>
-      <Text style={{ color: "white", fontFamily: "RobotoMono", fontSize: 24, paddingBottom: 12 }}>
-        Text to Speech
-      </Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text style={{ color: "white", fontFamily: "RobotoMono", fontSize: 24, paddingBottom: 12 }}>
+          Text to Speech
+        </Text>
+        {isLoading ? <Loading /> : null}
+      </View>
       <View style={{ flexDirection: "row", gap: 12 }}>
         <SelectInputField
           value={selectedLanguage}
-          options={Array.from(languages)}
+          options={Array.from(languages).sort()}
           action={onLanguageSelection}
         />
         <SelectInputField
           value={selectedRegion}
-          options={Array.from(regionOptions)}
+          options={Array.from(regionOptions).sort()}
           action={onRegionSelection}
         />
       </View>

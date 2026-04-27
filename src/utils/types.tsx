@@ -1,3 +1,10 @@
+export type TtsVoice = {
+  language: string;
+  region: string;
+  name: string;
+  isSelected: boolean;
+};
+
 export type ConversationContent = {
   user: string;
   thinking: string;

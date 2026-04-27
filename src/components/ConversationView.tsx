@@ -7,6 +7,7 @@ import AssistantToolView from "./AssistantToolView";
 import SocketSingleton from "@/utils/socket";
 import ConversationBlock from "./ConversationBlock";
 import { ConversationContent } from "@/utils/types";
+import { state$ } from "@/utils/store";
 
 export default function ConversationView() {
   const [conversations, setConversations] = useState<ConversationContent[]>([]);
@@ -67,7 +68,7 @@ export default function ConversationView() {
           conversations.map((conversation, index) =>
             index === conversations.length - 1 ? { ...conversation, assistant: res } : conversation
           ));
-        speak(res);
+        speak(res, { voice: state$.ttsVoice.get().name });
 
         return "";
       });
@@ -102,7 +103,7 @@ export default function ConversationView() {
           conversations.map((conversation, index) =>
             index === conversations.length - 1 ? { ...conversation, assistant: assistant } : conversation
           ));
-        speak(assistant);
+        speak(assistant, { voice: state$.ttsVoice.get().name });
 
         return "";
       });

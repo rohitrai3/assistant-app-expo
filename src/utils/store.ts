@@ -2,6 +2,7 @@ import { observable } from "@legendapp/state";
 import { configureObservablePersistence, persistObservable } from "@legendapp/state/persist";
 import { ObservablePersistAsyncStorage } from "@legendapp/state/persist-plugins/async-storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TtsVoice } from "./types";
 
 configureObservablePersistence({
   pluginLocal: ObservablePersistAsyncStorage,
@@ -20,8 +21,7 @@ export const state$ = observable({
     content: "",
     duration: 0,
   },
-  language: "en",
-  region: "US",
+  ttsVoice: { language: "en", region: "US", name: "en-US-language", isSelected: true } as TtsVoice,
 });
 
 persistObservable(state$, {
