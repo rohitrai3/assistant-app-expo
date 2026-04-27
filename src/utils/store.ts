@@ -20,6 +20,8 @@ export const state$ = observable({
     content: "",
     duration: 0,
   },
+  language: "en",
+  region: "US",
 });
 
 persistObservable(state$, {

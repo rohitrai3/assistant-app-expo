@@ -1,22 +1,23 @@
 import { GRAY_DARK } from "@/utils/constants";
 import { useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 
 type SelectInputFieldProps = {
+  value: string;
   options: string[];
+  action: (arg: string) => void;
 }
 
-export default function SelectInputField({ options }: SelectInputFieldProps) {
+export default function SelectInputField({ value, options, action }: SelectInputFieldProps) {
   const [isExpand, setIsExpand] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("en");
 
   function expand() {
     setIsExpand(prev => !prev);
   }
 
   function onSelection(value: string) {
-    setValue(value);
     setIsExpand(false);
+    action(value);
   }
 
   return (
@@ -28,12 +29,12 @@ export default function SelectInputField({ options }: SelectInputFieldProps) {
             borderColor: "white",
             borderWidth: 1,
             borderRadius: 8,
-            paddingInline: 8,
+            paddingLeft: 8,
             paddingBlock: 4,
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ color: "white", fontFamily: "RobotoMono", }}>
+          <Text style={{ color: "white", fontFamily: "RobotoMono", fontSize: 16, }}>
             {value}
           </Text>
           {isExpand ?
@@ -44,26 +45,34 @@ export default function SelectInputField({ options }: SelectInputFieldProps) {
       </Pressable>
       {
         isExpand ?
-          <View
+          <ScrollView
             style={{
-              position: "relative",
+              position: "absolute",
               backgroundColor: GRAY_DARK,
               zIndex: 1,
               paddingInline: 12,
               borderRadius: 8,
+              top: 32,
+              maxHeight: 100,
             }}
+            contentContainerStyle={{
+              paddingBlock: 4,
+            }}
+            nestedScrollEnabled
           >
-            {options.map((option, index) =>
-              <Pressable key={index} onPress={() => onSelection(option)}>
-                <Text style={{ color: "white", fontFamily: "RobotoMono" }}>
-                  {option}
-                </Text>
-              </Pressable>
-            )}
-          </View> :
+            {
+              options.map((option, index) =>
+                <Pressable key={index} onPress={() => onSelection(option)}>
+                  <Text style={{ color: "white", fontFamily: "RobotoMono", fontSize: 16, }}>
+                    {option}
+                  </Text>
+                </Pressable>
+              )
+            }
+          </ScrollView> :
           null
       }
-    </View>
+    </View >
   );
 
 }

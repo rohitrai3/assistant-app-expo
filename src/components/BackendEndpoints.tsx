@@ -20,7 +20,7 @@ const BackendEndpoints = observer(() => {
   }
 
   return (
-    <View style={{ paddingInline: 12, gap: 12 }}>
+    <View style={{ paddingInline: 12, gap: 12, paddingBottom: 24 }}>
       <View
         style={{
           flexDirection: "row",
@@ -44,7 +44,7 @@ const BackendEndpoints = observer(() => {
         <View key={index} style={{ flexDirection: "row", gap: 12 }}>
           <IconButton name="close" value={endpoint} action={removeEndpoint} size="small" />
           <Text style={{ color: "white", flex: 1 }}>{endpoint}</Text>
-          <ToggleInputField value={isActiveEndpoint} setValue={setIsActiveEndpoint} />
+          <ToggleInputField value={isActiveEndpoint} />
         </View>
       )}
     </View>
