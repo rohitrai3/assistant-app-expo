@@ -1,4 +1,5 @@
 import { LoginRequest, LoginResponse } from "./types";
+import { fetch } from "expo/fetch";
 
 export async function login(request: LoginRequest): Promise<LoginResponse | null> {
   console.log("Logging in...");
@@ -22,8 +23,16 @@ export async function login(request: LoginRequest): Promise<LoginResponse | null
 }
 
 export async function ping(backend: string): Promise<boolean> {
-  const response = await fetch(`${backend}/ping`)
-    .then(res => res.json())
+  const response = await fetch(`${backend}/ping`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => {
+      console.log("Header:", res.headers);
+      return res.json();
+    })
     .then(data => data)
     .catch(err => console.error("Ping failed:", err));
 

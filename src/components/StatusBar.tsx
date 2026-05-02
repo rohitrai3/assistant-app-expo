@@ -9,6 +9,7 @@ import SocketSingleton from "@/utils/socket";
 
 const StatusBar = observer(() => {
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
+  const [isLlmConnected, setIsLlmConnected] = useState<boolean>(false);
 
   useEffect(() => {
     if (state$.activeEndpoint.get()) {
@@ -25,6 +26,11 @@ const StatusBar = observer(() => {
       socket.on("connect_error", (err) => {
         console.log("Backend connection error:", err);
         setIsBackendConnected(false);
+      });
+      socket.emit("status.llm.check");
+      socket.on("status.llm.online", () => {
+        console.log("LLM connected");
+        setIsLlmConnected(true);
       });
     }
   }, []);
@@ -44,6 +50,7 @@ const StatusBar = observer(() => {
         }}
       >
         <ItemStatus name="Backend" status={isBackendConnected} />
+        <ItemStatus name="LLM" status={isLlmConnected} />
       </View>
       <Notification />
     </SafeAreaView>
