@@ -12,7 +12,7 @@ const StatusBar = observer(() => {
   const [isLlmConnected, setIsLlmConnected] = useState<boolean>(false);
 
   useEffect(() => {
-    if (state$.activeEndpoint.get()) {
+    if (state$.selectedEndpointUrl.get()) {
       const socket = SocketSingleton.getInstance();
 
       socket.on("connect", () => {

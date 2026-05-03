@@ -8,7 +8,7 @@ export default class SocketSingleton {
 
   public static getInstance(): Socket {
     if (!SocketSingleton.instance) {
-      SocketSingleton.instance = io(state$.activeEndpoint.get(), { transports: ["websocket"] });
+      SocketSingleton.instance = io(state$.selectedEndpointUrl.get(), { transports: ["websocket"] });
     }
 
     return SocketSingleton.instance;

@@ -18,9 +18,9 @@ export default function Conversation() {
 
   useEffect(() => {
     if (!state$.username.get()) router.navigate("/");
-    if (!state$.activeEndpoint.get()) router.navigate("/settings");
+    if (!state$.selectedEndpointUrl.get()) router.navigate("/settings");
 
-    // socket.emit("conversation.assistant.init", state$.username.get());
+    socket.emit("conversation.assistant.init", state$.username.get());
 
     return () => {
       socket.off("conversation.assistant.init", () =>
