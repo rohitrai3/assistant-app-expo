@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import AddBackendEndpoint from "./AddBackendEndpoint";
 import { state$ } from "@/utils/store";
 import ToggleInputField from "./ToggleInputField";
 import IconButton from "./IconButton";
 import { observer } from "@legendapp/state/react";
+import { GRAY_DARK } from "@/utils/constants";
+import { Endpoint } from "@/utils/types";
 
 const BackendEndpoints = observer(() => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isActiveEndpoint, setIsActiveEndpoint] = useState<boolean>(false);
-  const endpoints = state$.endpoints.get();
+  const [endpoints, setEndpoints] = useState<Endpoint[]>(state$.endpoints.get());
+  const [isSelectedEndpoint, setIsSelectedEndpoint] = useState<boolean>(false);
 
   function onPress() {
     setIsModalVisible(true);
   }
 
-  function removeEndpoint(endpoint: string) {
-    state$.endpoints.set(prev => prev.filter(item => item !== endpoint));
+  function removeEndpoint(url: string) {
+    state$.endpoints.set(prev => prev.filter(endpoint => endpoint.url !== url));
   }
 
   return (
@@ -42,9 +44,17 @@ const BackendEndpoints = observer(() => {
       </View>
       {endpoints.map((endpoint, index) =>
         <View key={index} style={{ flexDirection: "row", gap: 12 }}>
-          <IconButton name="close" value={endpoint} action={removeEndpoint} size="small" />
-          <Text style={{ color: "white", flex: 1 }}>{endpoint}</Text>
-          <ToggleInputField value={isActiveEndpoint} />
+          <IconButton name="close" value={endpoint.url} action={removeEndpoint} size="small" />
+          <Text style={{ color: "white", flex: 1 }}>{endpoint.url}</Text>
+          <ToggleInputField value={endpoint.isSelected} />
+          <View
+            style={{
+              backgroundColor: endpoint.isSelected ? "green" : GRAY_DARK,
+              width: 12,
+              height: 12,
+              borderRadius: 100,
+            }}
+          />
         </View>
       )}
     </View>

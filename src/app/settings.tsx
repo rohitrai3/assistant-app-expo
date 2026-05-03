@@ -9,7 +9,7 @@ export default function Settings() {
   return (
     <SafeAreaView style={{ backgroundColor: "black", flex: 1 }} edges={["bottom"]}>
       <ScrollView>
-        <View style={{ alignItems: "flex-end" }}>
+        <View style={{ alignItems: "flex-end", paddingInline: 12 }}>
           <SignOut />
         </View>
         <Text

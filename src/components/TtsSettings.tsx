@@ -1,13 +1,11 @@
 import { getAvailableVoicesAsync, speak } from "expo-speech";
 import { useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import ToggleInputField from "./ToggleInputField";
 import SelectInputField from "./SelectInputField";
 import { TtsVoice } from "@/utils/types";
 import { state$ } from "@/utils/store";
 import Loading from "./Loading";
-
-
 
 export default function TtsSettings() {
   const [isLoading, setIsLoading] = useState<boolean>(true);

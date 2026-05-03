@@ -3,10 +3,8 @@ import { fetch } from "expo/fetch";
 
 export async function login(request: LoginRequest): Promise<LoginResponse | null> {
   console.log("Logging in...");
-  console.log("username:", request.username);
-  console.log("backend:", request.endpoint);
 
-  const response = await fetch(`${request.endpoint}/login`, {
+  const response = await fetch(`${request.endpoint.url}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,8 +20,8 @@ export async function login(request: LoginRequest): Promise<LoginResponse | null
   return response ? response : null;
 }
 
-export async function ping(backend: string): Promise<boolean> {
-  const response = await fetch(`${backend}/ping`, {
+export async function ping(endpointUrl: string): Promise<boolean> {
+  const response = await fetch(`${endpointUrl}/ping`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"

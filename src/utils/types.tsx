@@ -14,22 +14,22 @@ export type ConversationContent = {
 
 export type LoginResponse = {
   username: string;
-  activeEndpoint: string;
-  endpoints: string[];
+  selectedEndpointUrl: string;
+  endpoints: Endpoint[];
 }
 
 export type LoginRequest = {
   username: string;
-  endpoint: string;
+  endpoint: Endpoint;
 }
 
 export type SyncData = {
   username: string;
-  backendEndpoints: BackendEndpoint[];
+  backendEndpoints: Endpoint[];
 }
 
-export type BackendEndpoint = {
-  endpoint: string;
-  isActive: boolean;
+export type Endpoint = {
+  url: string;
+  isSelected: boolean;
 }
 

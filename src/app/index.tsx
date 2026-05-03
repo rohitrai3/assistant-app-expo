@@ -9,7 +9,7 @@ import { login, ping } from "@/utils/backend";
 
 export default function Index() {
   const [username, setUsername] = useState<string>("");
-  const [endpoint, setEndpoint] = useState<string>("");
+  const [endpointUrl, setEndpointUrl] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -17,17 +17,20 @@ export default function Index() {
   });
 
   async function submit() {
-    const isReachable = await ping(endpoint);
+    const isReachable = await ping(endpointUrl);
 
     if (isReachable) {
       const loginResponse = await login({
         username: username,
-        endpoint: endpoint
+        endpoint: {
+          url: endpointUrl,
+          isSelected: true,
+        }
       });
 
       if (loginResponse) {
         state$.username.set(loginResponse.username);
-        state$.activeEndpoint.set(loginResponse.activeEndpoint);
+        state$.selectedEndpointUrl.set(loginResponse.selectedEndpointUrl);
         state$.endpoints.set(loginResponse.endpoints);
         router.navigate("/conversation");
       }
@@ -52,9 +55,9 @@ export default function Index() {
         }}
       >
         <TextInputField placeholder="Username..." value={username} setValue={setUsername} />
-        <TextInputField placeholder="Endpoint..." value={endpoint} setValue={setEndpoint} />
+        <TextInputField placeholder="Endpoint URL..." value={endpointUrl} setValue={setEndpointUrl} />
       </View>
-      {(username && endpoint) ?
+      {(username && endpointUrl) ?
         <IconButton name="next" action={submit} type={PRIMARY} />
         : null
       }
