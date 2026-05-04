@@ -25,6 +25,7 @@ export default function Index() {
         endpoint: {
           url: endpointUrl,
           isSelected: true,
+          isOnline: null,
         }
       });
 

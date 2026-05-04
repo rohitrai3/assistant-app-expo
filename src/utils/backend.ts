@@ -1,5 +1,5 @@
 import { state$ } from "./store";
-import { LoginRequest, LoginResponse } from "./types";
+import { Endpoint, LoginRequest, LoginResponse } from "./types";
 import { fetch } from "expo/fetch";
 
 export async function login(request: LoginRequest): Promise<LoginResponse | null> {
@@ -21,7 +21,17 @@ export async function login(request: LoginRequest): Promise<LoginResponse | null
 
   console.log("response:", response);
 
-  return response ? response : null;
+  if (response) {
+    response.endpoints = response.endpoints.map((endpoint: Endpoint) => {
+      endpoint.isOnline = null;
+
+      return endpoint;
+    });
+
+    return response;
+  }
+
+  return null;
 }
 
 export async function ping(endpointUrl: string): Promise<boolean> {

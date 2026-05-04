@@ -1,3 +1,7 @@
+export const EMPTY_ENDPOINT = {
+  url: "",
+  isSelected: false,
+};
 export const EMPTY_CONVERSATION = {
   user: "",
   thinking: "",

@@ -1,24 +1,58 @@
-import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { useState } from "react";
+import { Image, Pressable, Text, View } from "react-native";
 import AddBackendEndpoint from "./AddBackendEndpoint";
 import { state$ } from "@/utils/store";
 import ToggleInputField from "./ToggleInputField";
 import IconButton from "./IconButton";
 import { observer } from "@legendapp/state/react";
-import { GRAY_DARK } from "@/utils/constants";
 import { Endpoint } from "@/utils/types";
+import { ping } from "@/utils/backend";
 
 const BackendEndpoints = observer(() => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [endpoints, setEndpoints] = useState<Endpoint[]>(state$.endpoints.get());
-  const [isSelectedEndpoint, setIsSelectedEndpoint] = useState<boolean>(false);
 
   function onPress() {
     setIsModalVisible(true);
   }
 
   function removeEndpoint(url: string) {
+    setEndpoints(prev => prev.filter(endpoint => endpoint.url !== url));
     state$.endpoints.set(prev => prev.filter(endpoint => endpoint.url !== url));
+  }
+
+  function onEndpointSelection(url: string) {
+    setEndpoints(prev => prev.map(endpoint => {
+      if (endpoint.url === url) endpoint.isSelected = true;
+      else endpoint.isSelected = false;
+      return endpoint;
+    }));
+    state$.selectedEndpointUrl.set(url);
+  }
+
+  function onEndpointAdd(endpoint: Endpoint) {
+    setEndpoints(prev => [...prev, endpoint]);
+  }
+
+  async function pingEndpoint(url: string) {
+    const isOnline = await ping(url);
+    console.log("isOnline:", isOnline);
+    setEndpoints(prev => prev.map(item => {
+      if (item.url === url) item.isOnline = isOnline;
+      return item;
+    }));
+  }
+
+  function getPingStyle(isOnline: null | boolean) {
+    if (isOnline !== null) {
+      if (isOnline) {
+        return { borderRadius: 100, backgroundColor: "green" };
+      } else {
+        return { borderRadius: 100, backgroundColor: "red" };
+      }
+    }
+
+    return { borderRadius: 100 };
   }
 
   return (
@@ -40,21 +74,27 @@ const BackendEndpoints = observer(() => {
           Backend Endpoints
         </Text>
         <IconButton name="add" action={onPress} size="medium" />
-        <AddBackendEndpoint isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
+        <AddBackendEndpoint
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          onEndpointAdd={onEndpointAdd}
+        />
       </View>
       {endpoints.map((endpoint, index) =>
         <View key={index} style={{ flexDirection: "row", gap: 12 }}>
           <IconButton name="close" value={endpoint.url} action={removeEndpoint} size="small" />
-          <Text style={{ color: "white", flex: 1 }}>{endpoint.url}</Text>
-          <ToggleInputField value={endpoint.isSelected} />
-          <View
-            style={{
-              backgroundColor: endpoint.isSelected ? "green" : GRAY_DARK,
-              width: 12,
-              height: 12,
-              borderRadius: 100,
-            }}
-          />
+          <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
+            <Text style={{ color: "white", paddingRight: 8, fontFamily: "RobotoMono", fontSize: 16 }}>
+              {endpoint.url}
+            </Text>
+            <Pressable
+              style={getPingStyle(endpoint.isOnline)}
+              onPress={() => pingEndpoint(endpoint.url)}
+            >
+              <Image source={require("../../assets/images/ping.png")} />
+            </Pressable>
+          </View>
+          <ToggleInputField name={endpoint.url} value={endpoint.isSelected} action={onEndpointSelection} />
         </View>
       )}
     </View>

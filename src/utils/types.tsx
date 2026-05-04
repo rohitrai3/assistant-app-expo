@@ -31,5 +31,6 @@ export type SyncData = {
 export type Endpoint = {
   url: string;
   isSelected: boolean;
+  isOnline: null | boolean;
 }
 
