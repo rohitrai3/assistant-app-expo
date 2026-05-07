@@ -11,29 +11,27 @@ const StatusBar = observer(() => {
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
   const [isLlmConnected, setIsLlmConnected] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (state$.selectedEndpointUrl.get()) {
-      const socket = SocketSingleton.getInstance();
+  if (state$.selectedEndpointUrl.get()) {
+    const socket = SocketSingleton.getInstance();
 
-      socket.on("connect", () => {
-        console.log("Backend connected");
-        setIsBackendConnected(true);
-      });
-      socket.on("disconnect", () => {
-        console.log("Backend disconnected");
-        setIsBackendConnected(false);
-      });
-      socket.on("connect_error", (err) => {
-        console.log("Backend connection error:", err);
-        setIsBackendConnected(false);
-      });
-      socket.emit("status.llm.check");
-      socket.on("status.llm.online", () => {
-        console.log("LLM connected");
-        setIsLlmConnected(true);
-      });
-    }
-  }, []);
+    socket.on("connect", () => {
+      console.log("Backend connected");
+      setIsBackendConnected(true);
+    });
+    socket.on("disconnect", () => {
+      console.log("Backend disconnected");
+      setIsBackendConnected(false);
+    });
+    socket.on("connect_error", (err) => {
+      console.log("Backend connection error:", err);
+      setIsBackendConnected(false);
+    });
+    socket.emit("status.llm.check");
+    socket.on("status.llm.online", () => {
+      console.log("LLM connected");
+      setIsLlmConnected(true);
+    });
+  }
 
   return (
     <SafeAreaView

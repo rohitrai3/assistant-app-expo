@@ -28,8 +28,8 @@ persistObservable(state$, {
   local: "state",
   pluginRemote: {
     set: async ({ value, changes }) => {
-      console.log("value:", value);
-      console.log("changes:", changes);
+      // console.log("value:", value);
+      // console.log("changes:", changes);
 
       //   if (!value) {
       //     console.log("Logout");

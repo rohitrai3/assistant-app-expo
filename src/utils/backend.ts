@@ -44,7 +44,7 @@ export async function ping(endpointUrl: string): Promise<boolean> {
     .then(res => res.json())
     .then(data => data)
     .catch(err => {
-      console.error("Ping failed:", err);
+      console.log("Ping failed:", err);
       state$.notification.set({ content: `Ping failed: ${err}`, duration: 1000 });
     });
 

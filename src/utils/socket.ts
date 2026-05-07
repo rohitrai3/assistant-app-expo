@@ -13,5 +13,10 @@ export default class SocketSingleton {
 
     return SocketSingleton.instance;
   }
+
+  public static setUrl(url: string) {
+    SocketSingleton.instance.removeAllListeners();
+    SocketSingleton.instance = io(url, { transports: ["websocket"] });
+  }
 }
 

@@ -7,6 +7,7 @@ import IconButton from "./IconButton";
 import { observer } from "@legendapp/state/react";
 import { Endpoint } from "@/utils/types";
 import { ping } from "@/utils/backend";
+import SocketSingleton from "@/utils/socket";
 
 const BackendEndpoints = observer(() => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -27,6 +28,7 @@ const BackendEndpoints = observer(() => {
       else endpoint.isSelected = false;
       return endpoint;
     }));
+    SocketSingleton.setUrl(url);
     state$.selectedEndpointUrl.set(url);
   }
 
