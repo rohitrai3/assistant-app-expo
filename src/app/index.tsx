@@ -20,6 +20,9 @@ export default function Index() {
     const isReachable = await ping(endpointUrl);
 
     if (isReachable) {
+      console.log("Backend is reachable");
+      state$.notification.set({ content: "Backend is reachable", duration: 1000 });
+
       const loginResponse = await login({
         username: username,
         endpoint: {
@@ -30,6 +33,9 @@ export default function Index() {
       });
 
       if (loginResponse) {
+        console.log("Logged in");
+        state$.notification.set({ content: "Logged in", duration: 1000 });
+
         state$.username.set(loginResponse.username);
         state$.selectedEndpointUrl.set(loginResponse.selectedEndpointUrl);
         state$.endpoints.set(loginResponse.endpoints);

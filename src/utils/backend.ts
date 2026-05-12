@@ -28,9 +28,11 @@ export async function login(request: LoginRequest): Promise<LoginResponse | null
       return endpoint;
     });
 
+    state$.notification.set({ content: "Login successful", duration: 1000 });
     return response;
   }
 
+  state$.notification.set({ content: "Login failed", duration: 1000 });
   return null;
 }
 

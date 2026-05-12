@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ItemStatus from "./ItemStatus";
@@ -10,6 +10,7 @@ import SocketSingleton from "@/utils/socket";
 const StatusBar = observer(() => {
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
   const [isLlmConnected, setIsLlmConnected] = useState<boolean>(false);
+  const [isFinanceConnected, setIsFinanceConnected] = useState<boolean>(false);
 
   if (state$.selectedEndpointUrl.get()) {
     const socket = SocketSingleton.getInstance();
@@ -31,6 +32,11 @@ const StatusBar = observer(() => {
       console.log("LLM connected");
       setIsLlmConnected(true);
     });
+    socket.emit("status.finance.check");
+    socket.on("status.finance.online", () => {
+      console.log("Finance connected");
+      setIsFinanceConnected(true);
+    });
   }
 
   return (
@@ -49,6 +55,7 @@ const StatusBar = observer(() => {
       >
         <ItemStatus name="Backend" status={isBackendConnected} />
         <ItemStatus name="LLM" status={isLlmConnected} />
+        <ItemStatus name="Finance" status={isFinanceConnected} />
       </View>
       <Notification />
     </SafeAreaView>
