@@ -6,6 +6,7 @@ import SelectInputField from "./SelectInputField";
 import { TtsVoice } from "@/utils/types";
 import { state$ } from "@/utils/store";
 import Loading from "./Loading";
+import TextInputField from "./TextInputField";
 
 export default function TtsSettings() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -15,6 +16,7 @@ export default function TtsSettings() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("--");
   const [regionOptions, setRegionOptions] = useState<Set<string>>(new Set());
   const [selectedRegion, setSelectedRegion] = useState<string>("--");
+  const [sampleText, setSampleText] = useState<string>("Hello World!");
 
   useEffect(() => {
     (async () => {
@@ -59,7 +61,7 @@ export default function TtsSettings() {
   }, []);
 
   function onVoiceSelect(name: string) {
-    speak("Hello World!", { voice: name });
+    speak(sampleText, { voice: name });
 
     setFilteredVoices(prev =>
       prev.map(voice => {
@@ -113,6 +115,7 @@ export default function TtsSettings() {
         </Text>
         {isLoading ? <Loading /> : null}
       </View>
+      <TextInputField placeholder="Sample text" value={sampleText} setValue={setSampleText} />
       <View style={{ flexDirection: "row", gap: 12 }}>
         <SelectInputField
           value={selectedLanguage}
