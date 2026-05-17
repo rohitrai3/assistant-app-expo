@@ -32,6 +32,10 @@ const StatusBar = observer(() => {
       console.log("LLM connected");
       setIsLlmConnected(true);
     });
+    socket.on("status.llm.offline", () => {
+      console.log("LLM disconnected");
+      setIsLlmConnected(false);
+    });
     socket.emit("status.finance.check");
     socket.on("status.finance.online", () => {
       console.log("Finance connected");
