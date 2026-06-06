@@ -16,11 +16,9 @@ const StatusBar = observer(() => {
     const socket = SocketSingleton.getInstance();
 
     socket.on("connect", () => {
-      console.log("Backend connected");
       setIsBackendConnected(true);
     });
     socket.on("disconnect", () => {
-      console.log("Backend disconnected");
       setIsBackendConnected(false);
     });
     socket.on("connect_error", (err) => {
@@ -29,16 +27,13 @@ const StatusBar = observer(() => {
     });
     socket.emit("status.llm.check");
     socket.on("status.llm.online", () => {
-      console.log("LLM connected");
       setIsLlmConnected(true);
     });
     socket.on("status.llm.offline", () => {
-      console.log("LLM disconnected");
       setIsLlmConnected(false);
     });
     socket.emit("status.finance.check");
     socket.on("status.finance.online", () => {
-      console.log("Finance connected");
       setIsFinanceConnected(true);
     });
   }

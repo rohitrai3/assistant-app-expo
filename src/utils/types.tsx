@@ -1,3 +1,15 @@
+export type Server = {
+  name: string;
+  command: string;
+  args: string[];
+  env: KeyValuePair[];
+}
+
+export type KeyValuePair = {
+  key: string;
+  value: string;
+}
+
 export type TtsVoice = {
   language: string;
   region: string;

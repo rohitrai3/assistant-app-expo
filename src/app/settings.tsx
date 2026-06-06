@@ -1,5 +1,6 @@
 import BackendEndpoints from "@/components/BackendEndpoints";
 import SignOut from "@/components/LogOut";
+import McpServerSettings from "@/components/McpServerSettings";
 import TtsSettings from "@/components/TtsSettings";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,6 +24,7 @@ export default function Settings() {
           Settings
         </Text>
         <BackendEndpoints />
+        <McpServerSettings />
         <TtsSettings />
       </ScrollView>
     </SafeAreaView>

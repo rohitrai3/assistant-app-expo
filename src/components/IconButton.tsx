@@ -1,4 +1,4 @@
-import { GRAY, PRIMARY, PURPLE, RED, TERTIARY } from "@/utils/constants";
+import { GRAY, GRAY_DARK, PRIMARY, PURPLE, RED, TERTIARY } from "@/utils/constants";
 import { Image, Pressable } from "react-native";
 
 type IconButtonProps = {
@@ -64,28 +64,28 @@ export default function IconButton({ name, value, action, type, size }: IconButt
     }
   }
 
-  function getColor() {
+  function getColor(pressed: boolean): string {
     switch (type) {
       case PRIMARY:
         return PURPLE;
       case TERTIARY:
         return RED;
       default:
-        return GRAY;
+        return pressed ? GRAY_DARK : GRAY;
     }
   }
 
   return (
     <Pressable
-      style={{
-        backgroundColor: getColor(),
+      style={({ pressed }) => [{
+        backgroundColor: getColor(pressed),
         padding: 0,
         borderRadius: 100,
         justifyContent: "center",
         alignItems: "center",
         width: getBackgroundSize(),
         height: getBackgroundSize(),
-      }}
+      }]}
       onPress={onPress}
     >
       {<Image style={{ width: getIconSize(), height: getIconSize() }} source={getPath()} />}
